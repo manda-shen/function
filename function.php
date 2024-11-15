@@ -39,47 +39,43 @@ function pdo($db){
     return $pdo;
 }
 
-
 /**
- * 回傳指定資料表的所有資料
- * @param string $table 資料表名稱
- * @return array
- */
+* 回傳指定資料表的所有資料
+* @param string $table 資料表名稱
+* @return array
+*/
 function all($table){
-    /* $pdo=pdo('crud'); */
-    global $pdo;
-
-    $sql="select * from $table";
-    $rows=$pdo->query($sql)->fetchAll(PDO::FETCH_ASSOC);
-    return $rows;
+   $pdo=pdo('crud');
+   $sql="select * from $table";
+   $rows=$pdo->query($sql)->fetchAll(PDO::FETCH_ASSOC);
+   return $rows;
 }
 
 /**
- * 回傳指定資料表的特定ID的單筆資料
- * @param string $table 資料表名稱
- * @param integer $id || array $id 資料表ID
- * @return array
- */
+* 回傳指定資料表的特定ID的單筆資料
+* @param string $table 資料表名稱
+* @param integer $id || array $id 資料表ID
+* @return array
+*/
 function find($table,$id){
-    
-    global $pdo;
+   $sql="select * from $table where ";
+   $pdo=$pdo=pdo('crud');
 
-    if(is_array($id)){
-        $tmp=[];
-        foreach($id as $key => $value){
-            //sprintf("`%s`='%s'",$key,$value);
-            $tmp[]="`$key`='$value'";
-        }
-        $sql="select * from $table where ".join(" && ",$tmp);
-        
-    }else{
-        $sql="select * from $table where id='$id'";
-    }
-    $row=$pdo->query($sql)->fetch(PDO::FETCH_ASSOC);
-
-    return $row;
+   if(is_array($id)){
+       $tmp=[];
+       foreach($id as $key => $value){
+           //sprintf("`%s`='%s'",$key,$value);
+           $tmp[]="`$key`='$value'";
+       }
+       $sql=$sql.join(" && ",$tmp);
+       
+   }else{
+       $sql=$sql . " `id`='$id'";
+   }
+   $row=$pdo->query($sql)->fetch(PDO::FETCH_ASSOC);
+   
+   return $row;
 }
-
 
 /**
  * 刪除指定條件的資料
@@ -89,6 +85,7 @@ function find($table,$id){
  */
 
  function del($table ,$id){
+    $sql="delete from $table where ";
     $pdo=$pdo=pdo('crud');
 
     if(is_array($id)){
@@ -97,14 +94,46 @@ function find($table,$id){
             //sprintf("`%s`='%s'",$key,$value);
             $tmp[]="`$key`='$value'";
         }
-        $sql="delete from $table where ".join(" && ",$tmp);
+        $sql=$sql.join(" && ",$tmp);
         
     }else{
-        $sql="delete from $table where id='$id'";
+        $sql=$sql . " id='$id'";
     }
 
      return  $pdo->exec($sql);
     
+}
+
+/**
+ * 更新指定條件的資料
+ * @param string $table 資料表名稱
+ * @param array $array 更新的欄位及內容
+ * @param array || number $id 條件(數字或陣列)
+ * @return boolean
+ */
+
+function update($table,$array,$id){
+    $sql="update $table set ";
+    $pdo=$pdo=pdo('crud');
+    $tmp=[];
+    foreach($array as $key => $value){
+        $tmp[]="`$key`='$value'";
+    }
+    $sql=$sql . join(",",$tmp);
+
+    if(is_array($id)){
+        $tmp=[];
+        foreach($id as $key => $value){
+            $tmp[]="`$key`='$value'";
+        }
+        $sql=$sql . " where ".join(" && ",$tmp);
+
+    }else{
+        $sql=$sql . " where `id`='$id'";
+    }
+
+    return $pdo->exec($sql);
+
 
 }
 
@@ -116,5 +145,8 @@ function dd($array){
     print_r($array);
     echo "</pre>";
 }
+
+
+update('member',['email'=>'19@gmail.com'],['acc'=>'19','pw'=>'19']);
 
 ?>
