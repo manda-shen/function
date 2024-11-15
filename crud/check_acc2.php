@@ -1,6 +1,5 @@
-<?php
-$dsn="mysql:host=localhost;charset=utf8;dbname=crud";
-$pdo=new PDO($dsn,'root','');
+<?php 
+include "../function.php";
 
 
 if(!isset($_POST['acc'])){
@@ -12,25 +11,23 @@ $acc=$_POST['acc'];
 $pw=$_POST['pw'];
 
 //$sql="select * from `member` where `acc`='$acc' && `pw`='$pw'";
-$sql="select count(id) from `member` where `acc`='$acc' && `pw`='$pw'";
-//echo $sql;
-$row=$pdo->query($sql)->fetchColumn();
 
+//$sql="select count(id) from `member` where `acc`='$acc' && `pw`='$pw'";
+//echo $sql;
+$row=find('member',['acc'=>$acc,'pw'=>$pw]);
+dd($row);
 //echo "<pre>";
 //print_r($row);
 //echo "</pre>";
 
 //if($acc==$row['acc'] && $pw==$row['pw']){
-if($row>=1){
-
+if(!empty($row)){
+    
     //$_SESSION['login']=$acc;
-    // echo "<br><a href='login2.php'>回首頁</a>";
-    // header("location:success.php");
-    $_POST['acc']=$acc;
-    include 'success.php';
+    //echo "<br><a href='login2.php'>回首頁</a>";
+    header("location:success.php");
 }else{
     header("location:login2.php?err=1");
-    exit();
 
 }
 
