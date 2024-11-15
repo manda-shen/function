@@ -112,5 +112,11 @@
             <input type="reset" value="重置">
         </div>
     </form>
+
+<?php
+include "../function2.php";
+starts('菱形',21);
+?>
+
 </body>
 </html>

@@ -17,10 +17,13 @@
 //     echo "無法獲取帳號資訊。";
 // }
 
-$dsn="mysql:host=localhost;charset=utf8;dbname=crud";
-$pdo=new PDO($dsn,'root','');
+include "../function.php";
+$rows=all('member');
 
-$rows=$pdo->query("select * from member")->fetchAll(PDO::FETCH_ASSOC);
+// $dsn="mysql:host=localhost;charset=utf8;dbname=crud";
+// $pdo=new PDO($dsn,'root','');
+
+// $rows=$pdo->query("select * from member")->fetchAll(PDO::FETCH_ASSOC);
 
 ?>
 
