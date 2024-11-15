@@ -138,6 +138,22 @@ function update($table,$array,$id){
 }
 
 /**
+ * 新增資料
+ * @param string $table 資料表名稱
+ * @param string @cols 新增的欄位字串
+ * @param string @values 新增的值字串
+ * @return boolean
+ */
+
+function insert($table, $cols, $values){
+    $pdo=pdo('crud');
+    $sql="insert into $table";
+    $sql=$sql . "($cols)";
+    $sql=$sql . " values ($values)";
+    return $pdo->exec($sql);
+}
+
+/**
  * 列出陣列內容
  */
 function dd($array){
@@ -146,7 +162,8 @@ function dd($array){
     echo "</pre>";
 }
 
+insert("member","`acc`,`pw`,`email`,`tel`","'20','20','20@gmail.com','0912345678'");
 
-update('member',['email'=>'19@gmail.com'],['acc'=>'19','pw'=>'19']);
+// update('member',['email'=>'19@gmail.com'],['acc'=>'19','pw'=>'19']);
 
 ?>
