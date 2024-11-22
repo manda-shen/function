@@ -148,8 +148,9 @@ function update($table,$array,$id){
 function insert($table, $cols, $values){
     $pdo=pdo('crud');
     $sql="insert into $table";
-    $sql=$sql . "($cols)";
-    $sql=$sql . " values ($values)";
+    $key=array_keys($array);
+
+    $sql=$sql . "(`".join("`,`",$keys)."`) values ('".join("','",$array)."')";
     return $pdo->exec($sql);
 }
 
@@ -162,7 +163,12 @@ function dd($array){
     echo "</pre>";
 }
 
-insert("member","`acc`,`pw`,`email`,`tel`","'20','20','20@gmail.com','0912345678'");
+//insert("member",["acc"=>21,
+//                 "pw"=>21,
+//                 "email"=>"21@gmail.com",
+//                 "tel"=>"0933254879"]);
+
+// insert("member","`acc`,`pw`,`email`,`tel`","'20','20','20@gmail.com','0912345678'");
 
 // update('member',['email'=>'19@gmail.com'],['acc'=>'19','pw'=>'19']);
 
